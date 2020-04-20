@@ -17,6 +17,11 @@ class WriteSystemListener : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent?) {
         if (intent?.action == ACTION_WRITE_SYSTEM) {
+            if (!context.hasWriteSettings) {
+                context.launchWriteSettingsActivity()
+                return
+            }
+
             val key = intent.getStringExtra(EXTRA_KEY) ?: return
             val value = intent.getStringExtra(EXTRA_VALUE)
 
