@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="tk.zwander.systemuituner.systemsettings">
+
+    <permission
+        android:name="com.zacharee1.systemuituner.permission.WRITE_SETTINGS"
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="com.zacharee1.systemuituner.permission.WRITE_SETTINGS" />
+
+    <application
+        android:allowBackup="false"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".WriteSystemActivity"
+            android:permission="com.zacharee1.systemuituner.permission.WRITE_SETTINGS">
+            <intent-filter>
+                <action android:name="com.zacharee1.systemuituner.WRITE_SYSTEM" />
+            </intent-filter>
+        </activity>
+
+        <receiver
+            android:name=".WriteSystemListener"
+            android:exported="true"
+            android:permission="com.zacharee1.systemuituner.permission.WRITE_SETTINGS">
+            <intent-filter>
+                <action android:name="com.zacharee1.systemuituner.WRITE_SYSTEM" />
+            </intent-filter>
+        </receiver>
+    </application>
+
+</manifest>
