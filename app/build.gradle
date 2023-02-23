@@ -23,6 +23,15 @@ android {
     lintOptions {
         abortOnError false
     }
+
+    compileOptions {
+        targetCompatibility JavaVersion.VERSION_17
+        sourceCompatibility JavaVersion.VERSION_17
+    }
+
+    kotlin {
+        targetCompatibility JavaVersion.VERSION_17
+    }
 }
 
 dependencies {
