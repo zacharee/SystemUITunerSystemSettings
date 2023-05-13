@@ -1,17 +1,23 @@
 package com.zacharee1.systemuituner.systemsettingsaddon.library
 
 import android.annotation.SuppressLint
+import android.content.BroadcastReceiver
 import android.content.ComponentName
 import android.content.Context
 import android.content.ContextWrapper
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.ServiceConnection
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.IBinder
 import java.util.concurrent.ConcurrentSkipListSet
 
-class SettingsAddon private constructor(context: Context) : ContextWrapper(context), ServiceConnection {
+val Context.settingsAddon: SettingsAddon
+    get() = SettingsAddon.getInstance(this)
+
+class SettingsAddon private constructor(context: Context) : ContextWrapper(context),
+    ServiceConnection {
     companion object {
         @SuppressLint("StaticFieldLeak")
         private var instance: SettingsAddon? = null
@@ -25,6 +31,7 @@ class SettingsAddon private constructor(context: Context) : ContextWrapper(conte
     }
 
     var binder: ISettingsService? = null
+        @Synchronized
         private set(value) {
             field = value
 
@@ -46,7 +53,10 @@ class SettingsAddon private constructor(context: Context) : ContextWrapper(conte
 
             return try {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                    packageManager.getServiceInfo(component, PackageManager.ComponentInfoFlags.of(0L))
+                    packageManager.getServiceInfo(
+                        component,
+                        PackageManager.ComponentInfoFlags.of(0L)
+                    )
                 } else {
                     @Suppress("DEPRECATION")
                     packageManager.getServiceInfo(component, 0)
@@ -59,6 +69,21 @@ class SettingsAddon private constructor(context: Context) : ContextWrapper(conte
 
     private val binderListeners = ConcurrentSkipListSet<BinderListener>()
 
+    private val packageReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            when (intent?.action) {
+                Intent.ACTION_PACKAGE_REPLACED,
+                Intent.ACTION_PACKAGE_CHANGED,
+                Intent.ACTION_PACKAGE_ADDED -> {
+                    if (hasService) {
+                        unregisterReceiver(this)
+                        bindAddonService()
+                    }
+                }
+            }
+        }
+    }
+
     override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
         binder = ISettingsService.Stub.asInterface(service)
     }
@@ -67,12 +92,16 @@ class SettingsAddon private constructor(context: Context) : ContextWrapper(conte
         binder = null
     }
 
-    fun bindAddonService(connection: ServiceConnection): Boolean {
+    fun bindAddonService(): Boolean {
         val intent = Intent()
         intent.`package` = Constants.ADDON_PACKAGE
         intent.component = ComponentName(Constants.ADDON_PACKAGE, Constants.SERVICE_NAME)
 
-        return bindService(intent, connection, Context.BIND_AUTO_CREATE)
+        return bindService(intent, this, Context.BIND_AUTO_CREATE)
+    }
+
+    fun unbindAddonService() {
+        unbindService(this)
     }
 
     fun addBinderListener(listener: BinderListener) {
@@ -81,6 +110,18 @@ class SettingsAddon private constructor(context: Context) : ContextWrapper(conte
 
     fun removeBinderListener(listener: BinderListener) {
         binderListeners.remove(listener)
+    }
+
+    fun bindOnceAvailable() {
+        if (hasService) {
+            bindAddonService()
+        } else {
+            registerReceiver(packageReceiver, IntentFilter().apply {
+                addAction(Intent.ACTION_PACKAGE_REPLACED)
+                addAction(Intent.ACTION_PACKAGE_CHANGED)
+                addAction(Intent.ACTION_PACKAGE_ADDED)
+            })
+        }
     }
 
     interface BinderListener {
