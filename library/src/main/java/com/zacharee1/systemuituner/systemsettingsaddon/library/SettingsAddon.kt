@@ -11,7 +11,7 @@ import android.content.ServiceConnection
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.IBinder
-import java.util.concurrent.ConcurrentSkipListSet
+import java.util.concurrent.ConcurrentLinkedQueue
 
 val Context.settingsAddon: SettingsAddon
     get() = SettingsAddon.getInstance(this)
@@ -67,7 +67,7 @@ class SettingsAddon private constructor(context: Context) : ContextWrapper(conte
             }
         }
 
-    private val binderListeners = ConcurrentSkipListSet<BinderListener>()
+    private val binderListeners = ConcurrentLinkedQueue<BinderListener>()
 
     private val packageReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
