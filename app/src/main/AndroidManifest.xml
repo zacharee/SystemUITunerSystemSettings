@@ -9,6 +9,8 @@
 
     <uses-permission android:name="android.permission.WRITE_SETTINGS"
         tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS"
+        tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="com.zacharee1.systemuituner.permission.WRITE_SETTINGS" />
 
     <application
@@ -26,14 +28,6 @@
                 <action android:name="com.zacharee1.systemuituner.WRITE_SYSTEM" />
             </intent-filter>
         </activity>
-        <activity android:name=".WriteSettingActivity"
-            android:exported="true"
-            android:permission="com.zacharee1.systemuituner.permission.WRITE_SETTINGS"
-            android:theme="@style/AppTheme.Transparent">
-            <intent-filter>
-                <action android:name="com.zacharee1.systemuituner.WRITE_SETTING" />
-            </intent-filter>
-        </activity>
         <receiver
             android:name=".WriteSystemListener"
             android:exported="true"
@@ -42,14 +36,9 @@
                 <action android:name="com.zacharee1.systemuituner.WRITE_SYSTEM" />
             </intent-filter>
         </receiver>
-        <receiver
-            android:name=".WriteSettingListener"
+        <service android:name=".SettingsService"
             android:exported="true"
-            android:permission="com.zacharee1.systemuituner.permission.WRITE_SETTINGS">
-            <intent-filter>
-                <action android:name="com.zacharee1.systemuituner.WRITE_SETTING" />
-            </intent-filter>
-        </receiver>
+            android:permission="com.zacharee1.systemuituner.permission.WRITE_SETTINGS" />
     </application>
 
 </manifest>

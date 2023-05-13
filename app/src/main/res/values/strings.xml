@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">SystemUI Tuner System Settings Add-On</string>
 
-    <string name="grant_write_settings">Please grant WRITE_SETTINGS and try again</string>
+    <string name="grant_write_settings">Please grant access to write system settings.</string>
 </resources>

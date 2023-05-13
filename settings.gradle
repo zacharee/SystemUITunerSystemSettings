@@ -1,2 +1,4 @@
 include ':app'
+include ':library'
+
 rootProject.name = "SystemUI Tuner System Settings Add-On"
