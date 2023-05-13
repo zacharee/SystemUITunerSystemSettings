@@ -2,6 +2,7 @@ plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-parcelize'
+    id 'maven-publish'
 }
 
 android {
@@ -31,6 +32,20 @@ android {
     buildFeatures {
         aidl true
         buildConfig true
+    }
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+
+                groupId = 'com.zacharee1.systemuituner.systemsettingsaddon.library'
+                artifactId = 'final'
+                version = '1.0'
+            }
+        }
     }
 }
 
