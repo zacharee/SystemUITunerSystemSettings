@@ -3,7 +3,9 @@ package tk.zwander.systemuituner.systemsettings
 import android.app.Service
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.os.Handler
 import android.os.IBinder
+import android.os.Looper
 import android.provider.Settings
 import com.zacharee1.systemuituner.systemsettingsaddon.library.ISettingsService
 import com.zacharee1.systemuituner.systemsettingsaddon.library.SettingsType
@@ -61,7 +63,9 @@ class SettingsService : Service() {
             }
 
             override fun requestWriteSystem() {
-                launchWriteSettingsActivity()
+                Handler(Looper.getMainLooper()).post {
+                    launchWriteSettingsActivity()
+                }
             }
 
             override fun addonVersion(): Int {
