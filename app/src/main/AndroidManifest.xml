@@ -20,7 +20,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:testOnly="true">
+        android:testOnly="true"
+        android:name=".App">
         <activity android:name=".WriteSystemActivity"
             android:exported="true"
             android:permission="com.zacharee1.systemuituner.permission.WRITE_SETTINGS"
