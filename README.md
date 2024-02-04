@@ -28,6 +28,8 @@ Use the following command (note the `-t` flag):
 adb install -rt /path/to/add-on.apk
 ```
 
+On Android 14 and later, you'll also need to add the `--bypass-low-target-sdk-block` flag.
+
 ## Why a separate app?
 SystemUI Tuner is published on the Google Play Store, and so it needs to comply to the Google's publishing rules.
 
