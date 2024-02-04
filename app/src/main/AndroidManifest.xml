@@ -40,6 +40,10 @@
         <service android:name=".SettingsService"
             android:exported="true"
             android:permission="com.zacharee1.systemuituner.permission.WRITE_SETTINGS" />
+
+        <meta-data
+            android:name="com.bugsnag.android.API_KEY"
+            android:value="07d098f409403befbb687799785659ae"/>
     </application>
 
 </manifest>

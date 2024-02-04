@@ -1,5 +1,8 @@
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'com.bugsnag.android.gradle'
+}
 
 android {
     compileSdk 34
@@ -46,5 +49,8 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.core:core-ktx:1.12.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.bugsnag:bugsnag-android:6.1.0'
+    implementation 'com.getkeepsafe.relinker:relinker:1.4.5'
+
     implementation project(":library")
 }
