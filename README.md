@@ -8,7 +8,7 @@ In later versions of Android, Google also started restricting which values could
 This add-on targets API 22 (Android 5.1) and is built as test-only to bypass both restrictions when needed.
 
 ## Installation
-Downloads are available from the [Releases](https://github.com/zacharee/SystemUITunerSystemSettingsAddon/releases) page.
+Downloads are available from the [Releases](https://github.com/zacharee/SystemUITunerSystemSettings/releases) page.
 
 Since this add-on is marked as test-only, installation isn't as simple as opening the APK on your device. Android blocks test installations by default without a specific flag.
 
