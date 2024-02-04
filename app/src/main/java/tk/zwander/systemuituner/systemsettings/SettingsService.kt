@@ -13,7 +13,7 @@ import com.zacharee1.systemuituner.systemsettingsaddon.library.SettingsType
 class SettingsService : Service() {
     override fun onBind(intent: Intent?): IBinder {
         return object : ISettingsService.Stub() {
-            override fun readSetting(type: SettingsType?, key: String?): String {
+            override fun readSetting(type: SettingsType?, key: String?): String? {
                 return when (type) {
                     SettingsType.GLOBAL -> Settings.Global.getString(contentResolver, key)
                     SettingsType.SECURE -> Settings.Secure.getString(contentResolver, key)
