@@ -16,21 +16,19 @@ In order to install the add-on, you'll either need to use [Install with Options]
 
 You only need to use one of the methods below.
 
-### Install with Options
+### Option 1: Install with Options
 1. Download the add-on APK from the Releases page.
 2. Install "Install with Options" on your device.
 3. Open the app and follow the instructions to set up Shizuku.
-4. Select the "Allow Test" and "Bypass Low Target SDK Block" (if on Android 14 or later) options.
+4. Select the "Allow Test" and "Replace Existing" options.
 5. Select "Choose Files" and choose the downloaded add-on APK.
 6. Select "Install" and let the process complete.
 
-### ADB
+### Option 2: ADB
 Use the following command (note the `-t` flag):
 ```bash
 adb install -rt /path/to/add-on.apk
 ```
-
-On Android 14 and later, you'll also need to add the `--bypass-low-target-sdk-block` flag.
 
 ## Why a separate app?
 SystemUI Tuner is published on the Google Play Store, and so it needs to comply to the Google's publishing rules.
