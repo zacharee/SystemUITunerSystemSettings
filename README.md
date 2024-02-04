@@ -12,7 +12,9 @@ Downloads are available from the [Releases](https://github.com/zacharee/SystemUI
 
 Since this add-on is marked as test-only, installation isn't as simple as opening the APK on your device. Android blocks test installations by default without a specific flag.
 
-In order to install the add-on, you'll either need to use [Install with Options](https://github.com/zacharee/InstallWithOptions) (recommended for Android 11 and later) or ADB.
+In order to install the add-on, you'll either need to use [Install with Options](https://github.com/zacharee/InstallWithOptions) (recommended for Android 11 and later) _or_ ADB. 
+
+You only need to use one of the methods below.
 
 ### Install with Options
 1. Download the add-on APK from the Releases page.
