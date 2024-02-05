@@ -58,7 +58,6 @@ class SettingsAddon private constructor(context: Context) : ContextWrapper(conte
                         PackageManager.ComponentInfoFlags.of(0L)
                     )
                 } else {
-                    @Suppress("DEPRECATION")
                     packageManager.getServiceInfo(component, 0)
                 }
                 true
@@ -96,7 +95,16 @@ class SettingsAddon private constructor(context: Context) : ContextWrapper(conte
         intent.`package` = Constants.ADDON_PACKAGE
         intent.component = ComponentName(Constants.ADDON_PACKAGE, Constants.SERVICE_NAME)
 
-        return bindService(intent, this, Context.BIND_AUTO_CREATE)
+        try {
+            unbindService(this)
+        } catch (_: Throwable) {}
+        return bindService(intent, this, Context.BIND_AUTO_CREATE).also {
+            if (!it) {
+                try {
+                    unbindService(this)
+                } catch (_: Throwable) {}
+            }
+        }
     }
 
     fun unbindAddonService() {
