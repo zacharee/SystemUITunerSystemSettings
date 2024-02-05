@@ -142,6 +142,7 @@ class SettingsAddon private constructor(context: Context) : ContextWrapper(conte
                 addAction(Intent.ACTION_PACKAGE_CHANGED)
                 addAction(Intent.ACTION_PACKAGE_ADDED)
                 addAction(Intent.ACTION_PACKAGE_REMOVED)
+                addDataScheme("package")
             },
             ContextCompat.RECEIVER_EXPORTED,
         )
