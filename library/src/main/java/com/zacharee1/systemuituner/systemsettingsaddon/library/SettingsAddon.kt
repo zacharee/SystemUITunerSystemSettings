@@ -77,7 +77,16 @@ class SettingsAddon private constructor(context: Context) : ContextWrapper(conte
                 Intent.ACTION_PACKAGE_ADDED -> {
                     if (hasService) {
                         bindAddonService()
+                    } else {
+                        try {
+                            unbindAddonService()
+                        } catch (_: Throwable) {}
                     }
+                }
+                Intent.ACTION_PACKAGE_REMOVED -> {
+                    try {
+                        unbindAddonService()
+                    } catch (_: Throwable) {}
                 }
             }
         }
@@ -132,6 +141,7 @@ class SettingsAddon private constructor(context: Context) : ContextWrapper(conte
                 addAction(Intent.ACTION_PACKAGE_REPLACED)
                 addAction(Intent.ACTION_PACKAGE_CHANGED)
                 addAction(Intent.ACTION_PACKAGE_ADDED)
+                addAction(Intent.ACTION_PACKAGE_REMOVED)
             },
             ContextCompat.RECEIVER_EXPORTED,
         )
