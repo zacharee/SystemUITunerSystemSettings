@@ -76,7 +76,6 @@ class SettingsAddon private constructor(context: Context) : ContextWrapper(conte
                 Intent.ACTION_PACKAGE_CHANGED,
                 Intent.ACTION_PACKAGE_ADDED -> {
                     if (hasService) {
-                        unregisterReceiver(this)
                         bindAddonService()
                     }
                 }
@@ -115,13 +114,13 @@ class SettingsAddon private constructor(context: Context) : ContextWrapper(conte
     fun bindOnceAvailable() {
         if (hasService) {
             bindAddonService()
-        } else {
-            registerReceiver(packageReceiver, IntentFilter().apply {
-                addAction(Intent.ACTION_PACKAGE_REPLACED)
-                addAction(Intent.ACTION_PACKAGE_CHANGED)
-                addAction(Intent.ACTION_PACKAGE_ADDED)
-            })
         }
+
+        registerReceiver(packageReceiver, IntentFilter().apply {
+            addAction(Intent.ACTION_PACKAGE_REPLACED)
+            addAction(Intent.ACTION_PACKAGE_CHANGED)
+            addAction(Intent.ACTION_PACKAGE_ADDED)
+        })
     }
 
     interface BinderListener {

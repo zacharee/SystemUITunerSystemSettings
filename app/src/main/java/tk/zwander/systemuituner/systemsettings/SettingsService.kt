@@ -3,6 +3,7 @@ package tk.zwander.systemuituner.systemsettings
 import android.app.Service
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.os.Binder
 import android.os.Handler
 import android.os.IBinder
 import android.os.Looper
@@ -39,15 +40,21 @@ class SettingsService : Service() {
                         }
                     }
                     SettingsType.SYSTEM -> {
-                        if (canWriteSystem()) {
-                            try {
-                                Settings.System.putString(contentResolver, key, value)
-                            } catch (e: Exception) {
+                        val token = Binder.clearCallingIdentity()
+
+                        try {
+                            if (canWriteSystem()) {
+                                try {
+                                    Settings.System.putString(contentResolver, key, value)
+                                } catch (e: Exception) {
+                                    false
+                                }
+                            } else {
+                                requestWriteSystem()
                                 false
                             }
-                        } else {
-                            requestWriteSystem()
-                            false
+                        } finally {
+                            Binder.restoreCallingIdentity(token)
                         }
                     }
                     else -> throw IllegalArgumentException("Invalid settings type!")
