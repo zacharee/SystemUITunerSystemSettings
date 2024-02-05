@@ -11,6 +11,7 @@ import android.content.ServiceConnection
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.IBinder
+import androidx.core.content.ContextCompat
 import java.util.concurrent.ConcurrentLinkedQueue
 
 val Context.settingsAddon: SettingsAddon
@@ -124,11 +125,16 @@ class SettingsAddon private constructor(context: Context) : ContextWrapper(conte
             bindAddonService()
         }
 
-        registerReceiver(packageReceiver, IntentFilter().apply {
-            addAction(Intent.ACTION_PACKAGE_REPLACED)
-            addAction(Intent.ACTION_PACKAGE_CHANGED)
-            addAction(Intent.ACTION_PACKAGE_ADDED)
-        })
+        ContextCompat.registerReceiver(
+            this,
+            packageReceiver,
+            IntentFilter().apply {
+                addAction(Intent.ACTION_PACKAGE_REPLACED)
+                addAction(Intent.ACTION_PACKAGE_CHANGED)
+                addAction(Intent.ACTION_PACKAGE_ADDED)
+            },
+            ContextCompat.RECEIVER_EXPORTED,
+        )
     }
 
     interface BinderListener {
