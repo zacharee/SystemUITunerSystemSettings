@@ -27,7 +27,7 @@ You only need to use one of the methods below.
 ### Option 2: ADB
 Use the following command (note the `-t` flag):
 ```bash
-adb install -rt /path/to/add-on.apk
+adb install -r -t /path/to/add-on.apk
 ```
 
 ## Why a separate app?
