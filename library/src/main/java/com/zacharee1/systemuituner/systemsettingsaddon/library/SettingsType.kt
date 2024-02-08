@@ -1,9 +1,12 @@
 package com.zacharee1.systemuituner.systemsettingsaddon.library
 
 import android.net.Uri
+import android.os.Parcelable
 import android.provider.Settings
+import kotlinx.parcelize.Parcelize
 
-enum class SettingsType(val value: Int) {
+@Parcelize
+enum class SettingsType(val value: Int) : Parcelable {
     UNDEFINED(-1),
     GLOBAL(0),
     SECURE(1),
