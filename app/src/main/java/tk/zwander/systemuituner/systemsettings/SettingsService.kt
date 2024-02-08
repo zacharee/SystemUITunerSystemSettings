@@ -1,6 +1,7 @@
 package tk.zwander.systemuituner.systemsettings
 
 import android.app.Service
+import android.content.ContentResolver
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Binder
@@ -65,21 +66,29 @@ class SettingsService : Service() {
             }
 
             override fun listSettings(): Array<SettingsValue> {
+                fun acquireProvider(authority: String): Any {
+                    return ContentResolver::class.java
+                        .getMethod("acquireContentProvider", String::class.java)
+                        .invoke(contentResolver, authority)!!
+                }
+
+                val provider = acquireProvider(Settings.AUTHORITY)
+
                 return listInternal(
                     SettingsType.GLOBAL,
                     packageName,
                     Process.myUid(),
-                    contentResolver.acquireProvider(Settings.AUTHORITY),
+                    provider,
                 ) + listInternal(
                     SettingsType.SECURE,
                     packageName,
                     Process.myUid(),
-                    contentResolver.acquireProvider(Settings.AUTHORITY),
+                    provider,
                 ) + listInternal(
                     SettingsType.SYSTEM,
                     packageName,
                     Process.myUid(),
-                    contentResolver.acquireProvider(Settings.AUTHORITY),
+                    provider,
                 )
             }
 
