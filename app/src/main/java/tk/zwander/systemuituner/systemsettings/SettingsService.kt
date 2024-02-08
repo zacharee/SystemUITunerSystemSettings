@@ -7,9 +7,12 @@ import android.os.Binder
 import android.os.Handler
 import android.os.IBinder
 import android.os.Looper
+import android.os.Process
 import android.provider.Settings
 import com.zacharee1.systemuituner.systemsettingsaddon.library.ISettingsService
 import com.zacharee1.systemuituner.systemsettingsaddon.library.SettingsType
+import com.zacharee1.systemuituner.systemsettingsaddon.library.SettingsValue
+import com.zacharee1.systemuituner.systemsettingsaddon.library.listInternal
 
 class SettingsService : Service() {
     override fun onBind(intent: Intent?): IBinder {
@@ -59,6 +62,25 @@ class SettingsService : Service() {
                     }
                     else -> throw IllegalArgumentException("Invalid settings type!")
                 }
+            }
+
+            override fun listSettings(): Array<SettingsValue> {
+                return listInternal(
+                    SettingsType.GLOBAL,
+                    packageName,
+                    Process.myUid(),
+                    contentResolver.acquireProvider(Settings.AUTHORITY),
+                ) + listInternal(
+                    SettingsType.SECURE,
+                    packageName,
+                    Process.myUid(),
+                    contentResolver.acquireProvider(Settings.AUTHORITY),
+                ) + listInternal(
+                    SettingsType.SYSTEM,
+                    packageName,
+                    Process.myUid(),
+                    contentResolver.acquireProvider(Settings.AUTHORITY),
+                )
             }
 
             override fun canWriteGlobalOrSecure(): Boolean {
