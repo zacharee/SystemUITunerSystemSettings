@@ -12,17 +12,17 @@ enum class SettingsType(val value: Int) {
     val callGetMethod: String
         get() = when (this) {
             UNDEFINED -> throw IllegalArgumentException("Invalid settings type!")
-            GLOBAL -> Settings.CALL_METHOD_GET_GLOBAL
-            SECURE -> Settings.CALL_METHOD_GET_SECURE
-            SYSTEM -> Settings.CALL_METHOD_GET_SYSTEM
+            GLOBAL -> "GET_global"
+            SECURE -> "GET_secure"
+            SYSTEM -> "GET_system"
         }
 
     val callListMethod: String
         get() = when (this) {
             UNDEFINED -> throw IllegalArgumentException("Invalid settings type!")
-            GLOBAL -> Settings.CALL_METHOD_LIST_GLOBAL
-            SECURE -> Settings.CALL_METHOD_LIST_SECURE
-            SYSTEM -> Settings.CALL_METHOD_LIST_SYSTEM
+            GLOBAL -> "LIST_global"
+            SECURE -> "LIST_secure"
+            SYSTEM -> "LIST_system"
         }
 
     val contentUri: Uri
