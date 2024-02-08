@@ -67,7 +67,7 @@ fun listInternal(
     }
 }
 
-private fun List<String>.mapToSavedOptions(which: SettingsType): List<SettingsValue> {
+fun List<String>.mapToSavedOptions(which: SettingsType): List<SettingsValue> {
     return map { line ->
         val (key, value) = line.split("=").let { items ->
             val first = items[0]
