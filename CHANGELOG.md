@@ -1,3 +1,6 @@
+# 1.4
+- Add new listSettings() method for upcoming SystemUI Tuner feature.
+
 # 1.3
 - Fix a nullability issue.
 
