@@ -54,7 +54,6 @@ fun listInternal(
             ).invoke(
                 provider,
                 callingPackage,
-                Settings.AUTHORITY,
                 method,
                 null,
                 args,
