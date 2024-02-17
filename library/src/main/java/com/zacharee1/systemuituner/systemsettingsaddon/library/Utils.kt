@@ -20,9 +20,9 @@ fun listInternal(
         }
 
         val method = which.callListMethod
-        val args = Bundle().apply {
-            putInt("_user", uid)
-        }
+//        val args = Bundle().apply {
+//            putInt("_user", uid)
+//        }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             val source = Class.forName("android.content.AttributionSource")
@@ -42,7 +42,7 @@ fun listInternal(
                 Settings.AUTHORITY,
                 method,
                 null,
-                args,
+                null,
             ) as? Bundle?
         } else {
             provider::class.java.getMethod(
@@ -56,7 +56,7 @@ fun listInternal(
                 callingPackage,
                 method,
                 null,
-                args,
+                null,
             ) as? Bundle?
         }?.getStringArrayList("result_settings_list")
             ?.mapToSavedOptions(which)
