@@ -20,45 +20,63 @@ fun listInternal(
         }
 
         val method = which.callListMethod
-//        val args = Bundle().apply {
-//            putInt("_user", uid)
-//        }
+        val result = when {
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
+                val source = Class.forName("android.content.AttributionSource")
+                    .getConstructor(Int::class.java, String::class.java, String::class.java)
+                    .newInstance(uid, callingPackage, null) as AttributionSource
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            val source = Class.forName("android.content.AttributionSource")
-                .getConstructor(Int::class.java, String::class.java, String::class.java)
-                .newInstance(uid, callingPackage, null) as AttributionSource
+                provider::class.java.getMethod(
+                    "call",
+                    Class.forName("android.content.AttributionSource"),
+                    String::class.java,
+                    String::class.java,
+                    String::class.java,
+                    Bundle::class.java,
+                ).invoke(
+                    provider,
+                    source,
+                    Settings.AUTHORITY,
+                    method,
+                    null,
+                    null,
+                )
+            }
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q -> {
+                provider::class.java.getMethod(
+                    "call",
+                    String::class.java,
+                    String::class.java,
+                    String::class.java,
+                    String::class.java,
+                    Bundle::class.java,
+                ).invoke(
+                    provider,
+                    callingPackage,
+                    Settings.AUTHORITY,
+                    method,
+                    null,
+                    null,
+                )
+            }
+            else -> {
+                provider::class.java.getMethod(
+                    "call",
+                    String::class.java,
+                    String::class.java,
+                    String::class.java,
+                    Bundle::class.java,
+                ).invoke(
+                    provider,
+                    callingPackage,
+                    method,
+                    null,
+                    null,
+                )
+            }
+        } as? Bundle?
 
-            provider::class.java.getMethod(
-                "call",
-                Class.forName("android.content.AttributionSource"),
-                String::class.java,
-                String::class.java,
-                String::class.java,
-                Bundle::class.java,
-            ).invoke(
-                provider,
-                source,
-                Settings.AUTHORITY,
-                method,
-                null,
-                null,
-            ) as? Bundle?
-        } else {
-            provider::class.java.getMethod(
-                "call",
-                String::class.java,
-                String::class.java,
-                String::class.java,
-                Bundle::class.java,
-            ).invoke(
-                provider,
-                callingPackage,
-                method,
-                null,
-                null,
-            ) as? Bundle?
-        }?.getStringArrayList("result_settings_list")
+        result?.getStringArrayList("result_settings_list")
             ?.mapToSavedOptions(which)
             ?.toTypedArray() ?: arrayOf()
     } catch (e: Throwable) {
